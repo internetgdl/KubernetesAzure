@@ -786,9 +786,11 @@ Now we create our plan, but we will execute it by means of PowerShell Invoke-Exp
 `Invoke-Expression -Command "terraform plan --out $planName  -input=false -detailed-exitcode $planCmdVars"`
 
 The output of in the file system.
+
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/10.JPG?raw=true)
 
 The output of the console.
+
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/11.JPG?raw=true)
 
 
@@ -797,6 +799,7 @@ Finally we apply the plan, this will take a few minutes
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/12.JPG?raw=true)
 
 In the end I'll show
+
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/13.JPG?raw=true)
 
 Viewing from Azure
