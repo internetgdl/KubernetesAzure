@@ -1,18 +1,18 @@
-## Implementing a container cloud architecture. 
+# Implementing a container cloud architecture. 
 
-# We will deploy application in Dotnet Core 3.1 in Docker Containers to Container Registry in Azure, creating a Kubernetes Cluster with Terraform and Helm for internal routing and management of open authority certificates with integration with our own domain and continued delivery in Microsoft DevOps
-
-
-# Introduction:
-# The evolution of technology, the decentralization of data, the speed of innovation, adaptation to changes, has led us to think of a new way of developing software, which has led us to a new way of designing our solutions.
-# The cloud paradigm has made us rethink the correct use of resources.
-# The container architecture allows us to have small instances of our software components, but in order to achieve this we need to understand how they are orchestrated, managed, deployed, they grow, or they are reduced, etc.
-# In this tutorial we are going to work with one of the largest cloud service providers, and we will implement a container architecture, at the same time we will implement it with Terraform.
+#### We will deploy application in Dotnet Core 3.1 in Docker Containers to Container Registry in Azure, creating a Kubernetes Cluster with Terraform and Helm for internal routing and management of open authority certificates with integration with our own domain and continued delivery in Microsoft DevOps
 
 
-# 1. Requirements
+## Introduction:
+#### The evolution of technology, the decentralization of data, the speed of innovation, adaptation to changes, has led us to think of a new way of developing software, which has led us to a new way of designing our solutions.
+#### The cloud paradigm has made us rethink the correct use of resources.
+#### The container architecture allows us to have small instances of our software components, but in order to achieve this we need to understand how they are orchestrated, managed, deployed, they grow, or they are reduced, etc.
+#### In this tutorial we are going to work with one of the largest cloud service providers, and we will implement a container architecture, at the same time we will implement it with Terraform.
 
-# n this scenario we are going to work with windows computers Using Visual Studio Code using PowerShell as Console
+
+## 1. Requirements
+
+#### In this scenario we are going to work with windows computers Using Visual Studio Code using PowerShell as Console
 
 Visual Studio Code
 https://code.visualstudio.com/
@@ -28,7 +28,8 @@ Docker
 https://docs.docker.com/docker-for-windows/install/
 
 * Note that Docker installation requires that they enable Hypertreading on their machines, verify that docker is running
-(image 0)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/0.JPG?raw=true)
 
 Azure Cli
 
@@ -90,7 +91,8 @@ In the next block of lines we specify that we are going to copy the content of o
 
 Now we return to the console in the same path where our Dockerfile is, we built it and labeled it with version one
 `docker build ./ --tag "myproject:1"`
-(image 1)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/1.JPG?raw=true)
 
 With the above docker will build an image which we can see if we execute
 `docker images`
@@ -101,7 +103,8 @@ To get inside the cluster and run the image, run
 With the previous one, Docker will implement the image inside a container, where with -p we specify that it will map port 80 of our machine to port 80 of the container.
 
 To see it working, we open our browser on localhost, we must make sure that there is no other application using port 80, failing that we can map some other port.
-(image 2)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/2.JPG?raw=true)
 
 
 If we want to see the containers running we can run
@@ -116,7 +119,8 @@ Now we will see how to connect to Azure from our terminal to create a group of r
 Start session by running
 `az login `
 This will open a window in our browser and ask for the username and password, once validated it will close it and we return to our terminal to show us that we are inside.
-(image 3)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/3.JPG?raw=true)
 
 
 It will show us the subscriptions to which we have access, to see the default we can do it with
@@ -143,7 +147,8 @@ $location = "eastus"
 Once defined we create the resource group
 `az group create -l $location -n $nameGrp`
 If we enter the portal we can see that it has been created correctly.
-(image 4)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/4.JPG?raw=true)
 
 Now we create the Azure Container Registry, (ACR) to store our docker images.
 
@@ -181,10 +186,11 @@ Label with Docker
 Push the image
 `docker push $containerurl`
 
-(image 5)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/5.JPG?raw=true)
 
 We can see the image inside Azure Portal.
-(image 6)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/6.JPG?raw=true)
 
 # 5.- Terraform
 
@@ -719,7 +725,8 @@ Now we define the name of our container and proceed to create it
 `az storage container create -n $containerStateName --account-name $storageName --account-key $storageKey`
 
 We can see the resources we create on our Azure portal
-(image 7)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/7.JPG?raw=true)
 
 
 Now as we specify within the provider and before creating our Cluster we must specify the credentials of the Service Principal User (SP) who will create all the resources within our Azure subscription, this must be a user with high privileges.
@@ -729,7 +736,8 @@ Now we will create this user with Azure Cli
 Create the user and at the moment of creation we structure the response so that it only gives us the pasword in a flat way and assigns it to a variable.
 In this instruction we are already specifying that your role will be "Owner" for the subscription that we have in context.
 $spPassword = az ad sp create-for-rbac -n $spName --role "Owner" --query password --output tsv
-(image 8)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/8.JPG?raw=true)
 
 Once the user is created, we make queries to obtain the AppID and the ObjectID and assign it in variables.
 
@@ -768,7 +776,8 @@ Proceed to create our cluster by starting Terraform, as we said we specify the c
 
 `terraform init -backend-config="storage_account_name=$storageName" -backend-config="container_name=$containerStateName" -backend-config="access_key=$storageKey" -backend-config="key=codelab.microsoft.tfstate"`
 
-(image 9)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/9.JPG?raw=true)
+
 We can see that it created a folder with the information of our state and our provider, if there had been a problem at the start, terraform would tell us in a very explicit way, correct the problem, delete the folder and initialize it again
 
 
@@ -776,25 +785,31 @@ Now we create our plan, but we will execute it by means of PowerShell Invoke-Exp
 
 `Invoke-Expression -Command "terraform plan --out $planName  -input=false -detailed-exitcode $planCmdVars"`
 
-The output
-(image 10)
+The output of in the file system.
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/10.JPG?raw=true)
+
+The output of the console.
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/11.JPG?raw=true)
+
 
 Finally we apply the plan, this will take a few minutes
 
-(image 12)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/12.JPG?raw=true)
 
 In the end I'll show
-(image 13)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/13.JPG?raw=true)
 
 Viewing from Azure
 
-(image 14)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/14.JPG?raw=true)
 
 We'll see the virtual networ, kubernetes cluster, public IP, and a Identity created by Kuberneres plus the ACR, the storage previusly created in this tutorial
 
 As we can see in the creation of the ALS, Azure created a new group of resources where its name is structured something like this: MC_myaks_eastus with the resources that the cluster will need for its operations, such as a load balancer and other resources that we need and supply with the operation of our cluster.
 
-# 6. Kubernetes
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/15.JPG?raw=true)
+
+### 6. Kubernetes
 
 Now we can start creating deployments of Kubernetes, Services, etc.
 
@@ -816,7 +831,7 @@ For what we execute
 
 `az aks get-credentials --resource-group $groupName --name $aksName`
 
-(Image 16)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/16.JPG?raw=true)
 
 Go to the root of our solution and create a folder ca where we will put our yamls and enter
 
@@ -890,7 +905,8 @@ it must be and unique name to create the dns inside of Azure Region and associat
 Guardamos el archivo y las aplicaciones con Kubernetes.
 
 `kubectl apply -f .\eduardo.yaml Deploymeny-Service.yaml`
-(Image 17)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/17.JPG?raw=true)
 
 In order to see the created pods from the terminal, we execute.
 
@@ -905,26 +921,26 @@ To see the services
 `kubectl get services`
 
 Here we can see the external IP
-(Image 18)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/18.JPG?raw=true)
 
 Likewise we can ask Kubernetes to describe each object, to describe the service we execute.
 
 `kubectl describe services myimage-service`
 
-(Image 19)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/19.JPG?raw=true)
 
 If there are no errors, it will show us the dns label and we will be able to show our application from the browser, leaving a url composed of the name of dns that we define, the region and the domain of apps from Azure "http://myimage321.eastus.cloudapp.azure.com/"
 
-(Image 20)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/20.JPG?raw=true)
 
 A useful tool to manage the cluster is the Terraform Board, to start it we execute.
 
 `az aks browse --resource-group $groupName  --name $aksName`
 This will not open a browser window.
 
-(Image 21)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/21.JPG?raw=true)
 
-# DNS, Routing and Certificates 
+### DNS, Routing and Certificates 
 
 To be able to orchestrate with Kubernetes a solution that allows us to create call routes to our DNS between our services and manage security certificates, another series of elements are needed, such as routing, load balancer, certificate manager and the cluster of emission of certificates.
 
@@ -978,7 +994,7 @@ Just like with nginx we install it inside the ingress-basic namespace.
 Validate that we have the pods installed under the ingress-basic namespace.
 `kubectl get pods --namespace ingress-basic`
 
-(Image 22)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/22.JPG?raw=true)
 
 Create the DNS Zone for our domain.
 
@@ -989,20 +1005,24 @@ Get the NS Urls, to set to our domain in the system where do you buy your domain
 `az network dns zone show --name $dnsName --resource-group $groupName --query "nameServers"  --output tsv`
 
 We point our domain to those DNS.
-(Image 23)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/23.JPG?raw=true)
 
 Add and "A" record-set to the record-set of the DNS Zone with the IP of our balancer.
-(Image 24)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/24.JPG?raw=true)
 
 `az network dns record-set a add-record --resource-group $groupName --zone-name "ku2.com.mx" --record-set-name '*' --ipv4-address 52.191.81.204`
 
 We can see the area and the registration in the Azure Portal.
-(Image 25)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/25.JPG?raw=true)
 
 Now we are going to work with the Certificate Manager, first we are going to create an issuing cluster, this will not allow us to issue certificates when we create ingress elements for the services that we will publish in Kubernetes.
 
 The cluster will create the certificates using the LetsEncrypt certification authority.
-(Image 26)
+
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/26.JPG?raw=true)
 
 The way to create these elements is the same, creating their definitions in yaml format.
 
@@ -1126,11 +1146,11 @@ The important elements are:
 * name: myimage-ingress // el nombre del ingress
 * cert-manager.io/cluster-issuer: letsencrypt // el nombre de nuestro cluster de emision
 * hosts:
-    - myimage.mypersonaldomain123.com // sobre que llamada se enturará el tráfico y también se le especifica en el tls para la creación del dominio
+	* myimage.mypersonaldomain123.com // sobre que llamada se enturará el tráfico y también se le especifica en el tls para la creación del dominio
 * secretName: myimage-secret // el nombre del certificado en nuestro administrador de certificados
 * host: myimage.mypersonaldomain123.com // también se define en las reglas
 *  backend:
-          serviceName: myimage-service // el nombre que tiene nuestro servicio
+	* serviceName: myimage-service // el nombre que tiene nuestro servicio
 * path: /(.*) // la expresión por la cual se aplica el redireccionamiento de tráfico
 
 
@@ -1140,11 +1160,11 @@ The important elements are:
 We validate and wait for the certificate to be created
 `kubectl get certificates --namespace ingress-basic`
 
-(Image 26)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/27.JPG?raw=true)
 
 Now we can enter the browser, open our URL and validate the certificate
 
-(Image 27)
+![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/28.JPG?raw=true)
 
 With this we have finished "creating an application with DotNetCore 3.1, put it inside a Docker, upload it to an ACR, Create an AKS cluster with Kubernetes, Deploy Deployments, Services. Install an nginx Ingress route handler and certificate manager with LetsEncrypt with Helm."
 
