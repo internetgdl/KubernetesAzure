@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myimage
+  labels:
+    app: myimage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myimage
+  template:
+    metadata:
+      labels:
+        app: myimage
+    spec:
+      containers:
+        - name: myimage
+          image: myacr.azurecr.io/myproject:1
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: myimage321
+  name: myimage-service
+spec:
+  type: ClusterIP
+  ports:
+   - port: 80
+  selector:
+    app: eduardomx
