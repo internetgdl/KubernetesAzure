@@ -886,7 +886,7 @@ spec:
   ports:
    - port: 80
   selector:
-    app: eduardomx
+    app: myimage
 ```
 In the previous code block, the kind Deployment defines that we are going to start a new definition for a Deployment.
 
@@ -907,7 +907,7 @@ it must be and unique name to create the dns inside of Azure Region and associat
 
 Guardamos el archivo y las aplicaciones con Kubernetes.
 
-`kubectl apply -f .\eduardo.yaml Deploymeny-Service.yaml`
+`kubectl apply -f .\Deploymeny-Service.yaml`
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/17.JPG?raw=true)
 
@@ -1105,7 +1105,7 @@ spec:
   ports:
    - port: 80
   selector:
-    app: eduardomx
+    app: myimage
 ```
 * type: ClusterIP // This will not create public ip
 
@@ -1157,7 +1157,7 @@ The important elements are:
 * path: /(.*) // la expresión por la cual se aplica el redireccionamiento de tráfico
 
 
-`kubectl apply -f .\eduardoingress.yaml`
+`kubectl apply -f .\ingress.yaml`
 
 
 We validate and wait for the certificate to be created
