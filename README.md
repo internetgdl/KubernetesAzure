@@ -47,7 +47,7 @@ Choco, to install Terraform
 Terraform
 `$ choco install terraform`
 
-# 2. Create project
+## 2. Create project
 
 Create a new folder to work
 `mkdir myproject`
@@ -68,7 +68,7 @@ Publish the solution, it will create a folder with the binaries in a folder with
 If we want to see our solution running we execute the following command and open our browser on localhost in the indicated port.
 `dotnet run  ./`
 
-# 3. Mount it inside a Docker container on our local machine
+## 3. Mount it inside a Docker container on our local machine
 
 Inside our project we create a file called Dockerfile
 `New-Item -Path './Dockerfile' -ItemType File`
@@ -111,7 +111,7 @@ If we want to see the containers running we can run
 `docker ps`
 
 
-# 4.- Azure ACR
+## 4.- Azure ACR
 
 
 Now we will see how to connect to Azure from our terminal to create a group of resources and the Azure Container Registry (ACR) and upload our image of Docker.
@@ -192,7 +192,7 @@ We can see the image inside Azure Portal.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/6.JPG?raw=true)
 
-# 5.- Terraform
+## 5.- Terraform
 
 Now we will create our terraform environment to be able to deploy our Kubernetes cluster.
 
@@ -226,7 +226,7 @@ terraform {
 }
 ```
 
-In the final block we initialize terraform and specify that our provider is "azurerm"
+In the final block we initialize terraform and specify that our provider is "azurerm"F
 In the provider block we specify the version, then the variables that we will need to implement are:
 * subscription_id
 * client_id
@@ -940,7 +940,7 @@ This will not open a browser window.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/21.JPG?raw=true)
 
-### DNS, Routing and Certificates 
+## 7. DNS, Routing and Certificates 
 
 To be able to orchestrate with Kubernetes a solution that allows us to create call routes to our DNS between our services and manage security certificates, another series of elements are needed, such as routing, load balancer, certificate manager and the cluster of emission of certificates.
 
@@ -1172,8 +1172,8 @@ With this we have finished "creating an application with DotNetCore 3.1, put it 
 So if you have any questions please feel free to contact me.
 
 * Email: eduardo@eduardo.mx
-* Web: eduardo.mx
-* Twitter: internetgdl
+* Web: [Eduardo Estrada](http://eduardo.mx "Eduardo Estrada")
+* Twitter: [Twiter Eduardo Estrada](https://twitter.com/internetgdl "Twiter Eduardo Estrada")
 * LinkedIn: https://www.linkedin.com/in/luis-eduardo-estrada/
-* GitHub: internetgdl
+* GitHub: [GitHub Eduardo Estrada](https://github.com/internetgdl "GitHub Eduardo Estrada")
 * Eduardo Estrada
