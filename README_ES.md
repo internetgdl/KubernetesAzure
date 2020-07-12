@@ -114,81 +114,84 @@ Si deseamos ver los contenedores corriendo ejecutamos
 ## 4.- Azure ACR (Azure Container Registry)
 
 
-Now we will see how to connect to Azure from our terminal to create a group of resources and the Azure Container Registry (ACR) and upload our image of Docker.
+Ahora veremos como conectar Azure desde nuestra terminal para crear un grupo de recursos, un Azure Container Registry (ACR) y subir nuestra imágen de Docker.
 
-Start session by running
+Iniciamos la sesión corriendo
 `az login `
-This will open a window in our browser and ask for the username and password, once validated it will close it and we return to our terminal to show us that we are inside.
+Esto nos abrirá una nueva ventana en nuestro navegador y nos solicitará el usuario y la contraseña, una vez validado podremos regresar a la terminal.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/3.JPG?raw=true)
 
 
-It will show us the subscriptions to which we have access, to see the default we can do it with
+Nos mostrará las subscripciones a las que tenemos acceso, para ver la subscripción predeterminada lo podemos hacer con:
 `az account show`
 
-If the one that shows us is not the subscription in which we are going to work, then we specify it in a variable (good practice) and send it.
+Si esta no es con la que trabajaremos ponermos especificarla en una variable (buena práctica) y cambiarnos estableciendola como argumento de la siguiente forma:
 `$subscription =  "My Subscription"`
 `az account set --subscription $subscription`
 
-Now we are going to get the name, id and tenant of our subscription and assign it to variables, because we will need them later
+Ahora obtendremos el nombre, id y tenant de nuestra subscripción y la asignaremos dentro de varuables porque las necesitaremos mas adelante.
 ```
 $subscription = az account show --query name -o tsv
 $subscriptionId = az account show --query id -o tsv
 $tenant = az account show --query homeTenantId -o tsv
 ```
 
-Now we create in variables what is the name of the resource group with which we are going to work and in another variable the geographical location of those available by azure, in this example we will work with eastus
+Ahora crearemos en las variables cual será el nombre de nuestro grupo de recursos con el que vamos a trabajar, de igual forma establecemos en otra variable la ubicación geografica como lo define Azurem en este ejemplo usaremos "eastus"
 
 ```
 $nameGrp = "myResourceGroup"
 $location = "eastus"
 ```
 
-Once defined we create the resource group
+Una vez definida creamos el grupo de recursos.
 `az group create -l $location -n $nameGrp`
-If we enter the portal we can see that it has been created correctly.
+
+Si entramos a portal podremos ver que se han creado correctamente.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/4.JPG?raw=true)
 
-Now we create the Azure Container Registry, (ACR) to store our docker images.
+Ahora crearemos el Azure Container Registry, (ACR) para almacenar nuestras imagenes Docker.
 
-Define the name in one variable and in another the SKU with which it will be created`$acrname = "myacr"`
+Define el nombre en una variable y en otra el SKU de nuestro ACR
+`$acrname = "myacr"`
 `$acrSKU = "Standard"`
 
 
-Create it
+Lo creamos
 `az acr create --name $acrName --resource-group $groupName --sku $acrSKU`
-Enable the administration, which will allow us to connect from our Docker to upload the images
+Habilotamos la administración, esto nos permitirá conectarnos desde nuestra terminal para subir las imagenes.
 `az acr update --name $acrName --admin-enabled true`
 
-Get the URL to login and assign it to a variable
+Obtenemos la URL para hacer login y la asignamos a una variable
 `$acrURL = $(az acr show --name $acrName --resource-group $groupName --query loginServer -o tsv)`
 
 
-Now we obtain in different variables the user and any of the two available keys
+Ahora obtenemos en distintas variables el usuario la contraseña.
 `$acrusername = az acr credential show -n $acrname --query username`
 `$acrpassword = az acr credential show -n $acrname --query passwords[0].value`
 
-We can already login or HandShake between our machine and the ACR with this and it will allow us to do the push from Docker
+Ahora podemos hacer login o "HandShake" entre nuestra maquina y el ACR esto nos permitirá subir nuestra imagen con "push"
 `az acr login --name $acrname --username $acrusername  --password $acrpassword`
 
-Before doing push what we must do is re-label our local image with the name that the ACR will fear
+Antes de hacer push deemos re-etiquetar nuestra imagen local con el nombre del ACR que la almacenará.
 
 
-Let's remember that we are saving the names in variables so that we can use them throughout our context
-Name of image
+Recordaremos que estamos guardando todos los argumentos en variables para tenerlas disponibles durante nuestra sesión de trabajo en nuestra terminal.
+
 `$imageName = "myproject"`
 `$imageNameTag = "$imageName:1"`
-We build the Url of the image which is the URL of the container plus "/" plus the name of our image and its label
+
+Ahora construiremos como debe de irl la URL del ACR más  "/" más el nombre de nuestra imagen y esta será nuestra etiqueta.
 `$imageUrl = $acrURL + "/" + $imageNameTag `
-Label with Docker
+Etiquetamos con Docker
 `docker tag $imageNameTag $imageUrl`
-Push the image
+Hacemos Push a la imágen
 `docker push $containerurl`
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/5.JPG?raw=true)
 
-We can see the image inside Azure Portal.
+Ahora podemos ver la imágen dentro del portal de azure.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/6.JPG?raw=true)
 
