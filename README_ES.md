@@ -27,7 +27,7 @@ Docker
 
 https://docs.docker.com/docker-for-windows/install/
 
-* Note that Docker installation requires that they enable Hypertreading on their machines, verify that docker is running
+* Docker requiere que se habilite Hypertreading en sus maquinas; verifica que Docker ese corriendo
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/0.JPG?raw=true)
 
@@ -40,32 +40,32 @@ Kubernetes
 `Install-Script -Name install-kubectl -Scope CurrentUser -Force`
 `install-kubectl.ps1`
 
-Choco, to install Terraform
+Choco, para instalar Terraform
 
 `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))`
 
 Terraform
 `$ choco install terraform`
 
-## 2. Create project
+## 2. Crear el proyecto
 
-Create a new folder to work
+CRea una nueva carpeta donde instalaremos el proyecto.
 `mkdir myproject`
 `cd myproject`
 
-Now we will create a new application using DotNet Core and specifying the Web App template, this will create a folder with everything necessary for our first application.
+Ahora crearemos una nueva aplicacion usando DotNet Core y especificando la plantilla "Web App", esto les creará una carpeta con todo lo necesario para correr nuestra primera aplicación.
 `dotnet new webapp`
 
-Now we restore the solution so that it implements the packages of the dependencies that we could have.
+Ahora restauraremos la aplicación para obtener las dependencias que esta requiere.
 `dotnet restore ./`
 
-Build the solution.
+Construimos la aplicación.
 `dotnet build ./`
 
-Publish the solution, it will create a folder with the binaries in a folder within our project bin/Release/netcoreapp3.1/publish/
+Publicamos la solución, nos creará una carpeta con los binarios dentro de nuestra solución bin/Release/netcoreapp3.1/publish/
 `dotnet publish -c Release`
 
-If we want to see our solution running we execute the following command and open our browser on localhost in the indicated port.
+SI deseamos ver nuestrasolución corriendo ejecutaremos el siguiente comando y abriremos el navegador indicando la URL de localhost y el puerto requerido.
 `dotnet run  ./`
 
 ## 3. Mount it inside a Docker container on our local machine
