@@ -68,16 +68,16 @@ Publicamos la solución, nos creará una carpeta con los binarios dentro de nues
 SI deseamos ver nuestrasolución corriendo ejecutaremos el siguiente comando y abriremos el navegador indicando la URL de localhost y el puerto requerido.
 `dotnet run  ./`
 
-## 3. Mount it inside a Docker container on our local machine
+## 3. Montamos este dentro de un contenedor de Docker en nuestra maquina local
 
-Inside our project we create a file called Dockerfile
+Dentro de nuestro proyecto crearemos un archivo llamado Dockerfile
 `New-Item -Path './Dockerfile' -ItemType File`
 
-We open the file with Visual Studio Code
+Abrimos el archivo con Visual Studio Code
 `code ./Dockerfile`
 
 
-We copy the following code, replacing the tag with the name of our project
+Ahora copiaremos el sigiente código remplazando la linea de ENTRYPOINT con la dll principal de nuestro proyecto.
 ```
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 
@@ -86,32 +86,32 @@ WORKDIR /App
 ENTRYPOINT ["dotnet", "myproject.dll"]
 
 ```
-In the previous code the first line tells us that we are going to take the image published by Microsoft for aspnet Projects in DotNetCore 3.1
-In the next block of lines we specify that we are going to copy the content of our publication folder, that is, the binaries inside a folder called App/ and we put a ENTRYPOINT to run "dotnet myproject.dll" at startup.
+En el código anterior la primera linea nos dice que vamos a tomar la imagen pública  de Microsoft para proyectos ASPNet en DotNet Core 3.1
+En el siguiente bloque de lineas especificaremos que vamos a copiar el contenido de la carpeta de publicación de nuestro proyecto, que son los binarios a la carpeta llamada App/ y finalmente ponemos ENTRYPOINT para correr "dotnet myproject.dll" al iniciar la imagén.
 
-Now we return to the console in the same path where our Dockerfile is, we built it and labeled it with version one
+Ahora regresamos a la consona en la misma ruta donde se encuentra nuestro archivo Dockerfile, construiremos y etiquetaremos con la version uno.
 `docker build ./ --tag "myproject:1"`
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/1.JPG?raw=true)
 
-With the above docker will build an image which we can see if we execute
+Con la siguiente linea veremos las imagenes que ha construido Docker
 `docker images`
 
-To get inside the cluster and run the image, run
+Para ejecutar la imagen ejecutamos la siguiente linea:
 `docker run -it -p 80:80 myproject:1`
 
-With the previous one, Docker will implement the image inside a container, where with -p we specify that it will map port 80 of our machine to port 80 of the container.
+En la linea anterior estamos implementando la imagén dentro de un contenedor, donde el argumento -p especifica que el puerto 80 de nuestra maquina enrutara las peticiones al puerto 80 del contenedor.
 
-To see it working, we open our browser on localhost, we must make sure that there is no other application using port 80, failing that we can map some other port.
+Para verlo corriendo, abriremos la url de nuestro navegador en localhost, debemos de asegurarnos que otra aplicación no este usando el puerto 80, de cualquier forma podriamos espeficiar otro puerto.
 
 ![](https://github.com/internetgdl/KubernetesAzure/blob/master/images/2.JPG?raw=true)
 
 
-If we want to see the containers running we can run
+Si deseamos ver los contenedores corriendo ejecutamos
 `docker ps`
 
 
-## 4.- Azure ACR
+## 4.- Azure ACR (Azure Container Registry)
 
 
 Now we will see how to connect to Azure from our terminal to create a group of resources and the Azure Container Registry (ACR) and upload our image of Docker.
